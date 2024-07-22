@@ -24,10 +24,10 @@ grafico=px.scatter_matrix(df,dimensions=['age','income','loan'],color='default')
 
 #tratamento de valores incosistentes
 # etapa 1  - fazer a localização de valores incosistentes
-df.loc[df['age'] < 0]
-df2=df.drop('age',axis= 1)
-# ou
-df3=df.drop(df[df['age'] < 0 ].index)
+# df.loc[df['age'] < 0]
+# df2=df.drop('age',axis= 1)
+# # ou
+# df3=df.drop(df[df['age'] < 0 ].index)
 # ou
 df.loc[df['age'] < 0 ,'age'] =40.92 #mais indicado
 
@@ -45,6 +45,10 @@ X[:,0].max(), X[:,1].max(),X[:,2].max()
 scaler = StandardScaler()
 X= scaler.fit_transform(X)
 
+X_credit_treinamento,X_credit_teste,y_credit_treinamento,y_credit_teste=train_test_split(X,y,test_size=0.25,random_state=0)
+
+with open('credit.pkl', mode= 'wb') as f:
+    pickle.dump([X_credit_treinamento,y_credit_treinamento,X_credit_teste,y_credit_teste],f)
 
 # ==== CENSO ====
 df_census= pd.read_csv('census.csv')
@@ -90,23 +94,23 @@ X_census[:,13] = label_encoder_workclass.fit_transform(X_census[:,13])
 
 
 #OneHotEncoder
-carros = ["Ford Fiesta", "Volkswagen Gol", "Chevrolet Onix", "Hyundai HB20", "Toyota Corolla", "Honda Civic", "Renault Sandero", "Fiat Palio", "Nissan Kicks", "Jeep Renegade"]
-cidades = ["São Paulo", "Rio de Janeiro", "São Paulo", "Porto Alegre", "Curitiba", "Brasília", "Salvador", "Recife", "Fortaleza", "Rio de Janeiro"]
-precos = [40000, 35000, 45000, 50000, 80000, 75000, 30000, 20000, 90000, 95000]
-df_carros = pd.DataFrame({"carro": carros, "cidade": cidades, "preco": precos})
+# carros = ["Ford Fiesta", "Volkswagen Gol", "Chevrolet Onix", "Hyundai HB20", "Toyota Corolla", "Honda Civic", "Renault Sandero", "Fiat Palio", "Nissan Kicks", "Jeep Renegade"]
+# cidades = ["São Paulo", "Rio de Janeiro", "São Paulo", "Porto Alegre", "Curitiba", "Brasília", "Salvador", "Recife", "Fortaleza", "Rio de Janeiro"]
+# precos = [40000, 35000, 45000, 50000, 80000, 75000, 30000, 20000, 90000, 95000]
+# df_carros = pd.DataFrame({"carro": carros, "cidade": cidades, "preco": precos})
 
-X_carros=df_carros.iloc[:,0:2].values
-y_carros=df_carros.iloc[:,2].values
-le_carro=LabelEncoder()
-le_cidade=LabelEncoder()
-X_carros[:,0]=le_carro.fit_transform(X_carros[:,0])
-X_carros[:,1]=le_cidade.fit_transform(X_carros[:,1])
+# X_carros=df_carros.iloc[:,0:2].values
+# y_carros=df_carros.iloc[:,2].values
+# le_carro=LabelEncoder()
+# le_cidade=LabelEncoder()
+# X_carros[:,0]=le_carro.fit_transform(X_carros[:,0])
+# X_carros[:,1]=le_cidade.fit_transform(X_carros[:,1])
 
-onehotencoder_carros=ColumnTransformer(transformers=[('OneHot',OneHotEncoder(),[0,1])],remainder='passthrough')
-X_carros=onehotencoder_carros.fit_transform(X_carros).toarray()
-scaler_carros=StandardScaler()
-X_carros=scaler_carros.fit_transform(X_carros)
-X_carros_treinamento,X_carros_teste,y_carros_treinamento,y_carros_teste=train_test_split(X_carros,y_carros,test_size=0.15,random_state=0)
+# onehotencoder_carros=ColumnTransformer(transformers=[('OneHot',OneHotEncoder(),[0,1])],remainder='passthrough')
+# X_carros=onehotencoder_carros.fit_transform(X_carros).toarray()
+# scaler_carros=StandardScaler()
+# X_carros=scaler_carros.fit_transform(X_carros)
+# X_carros_treinamento,X_carros_teste,y_carros_treinamento,y_carros_teste=train_test_split(X_carros,y_carros,test_size=0.15,random_state=0)
 
 
 onehotencoder_census= ColumnTransformer(transformers=[('OneHot',OneHotEncoder(), [1,3,5,6,7,8,9,12])],remainder='passthrough')    
@@ -114,7 +118,6 @@ X_census=onehotencoder_census.fit_transform(X_census).toarray()
 scaler_census = StandardScaler()
 X_census=scaler_census.fit_transform(X_census)
 X_census_treinamento,X_census_teste,y_census_treinamento,y_census_teste=train_test_split(X_census,y_census,test_size=0.15,random_state=0)
-
 
 with open('census.pkl', mode='wb') as f:
     pickle.dump([X_census_treinamento,y_census_treinamento,X_census_teste,y_census_teste])
