@@ -94,6 +94,8 @@ X_census[:,13] = label_encoder_workclass.fit_transform(X_census[:,13])
 
 
 #OneHotEncoder
+
+
 # carros = ["Ford Fiesta", "Volkswagen Gol", "Chevrolet Onix", "Hyundai HB20", "Toyota Corolla", "Honda Civic", "Renault Sandero", "Fiat Palio", "Nissan Kicks", "Jeep Renegade"]
 # cidades = ["São Paulo", "Rio de Janeiro", "São Paulo", "Porto Alegre", "Curitiba", "Brasília", "Salvador", "Recife", "Fortaleza", "Rio de Janeiro"]
 # precos = [40000, 35000, 45000, 50000, 80000, 75000, 30000, 20000, 90000, 95000]
@@ -113,14 +115,14 @@ X_census[:,13] = label_encoder_workclass.fit_transform(X_census[:,13])
 # X_carros_treinamento,X_carros_teste,y_carros_treinamento,y_carros_teste=train_test_split(X_carros,y_carros,test_size=0.15,random_state=0)
 
 
-onehotencoder_census= ColumnTransformer(transformers=[('OneHot',OneHotEncoder(), [1,3,5,6,7,8,9,12])],remainder='passthrough')    
+onehotencoder_census= ColumnTransformer(transformers=[('OneHot',OneHotEncoder(), [1,3,5,6,7,8,9,13])],remainder='passthrough')    
 X_census=onehotencoder_census.fit_transform(X_census).toarray()
 scaler_census = StandardScaler()
 X_census=scaler_census.fit_transform(X_census)
 X_census_treinamento,X_census_teste,y_census_treinamento,y_census_teste=train_test_split(X_census,y_census,test_size=0.15,random_state=0)
 
 with open('census.pkl', mode='wb') as f:
-    pickle.dump([X_census_treinamento,y_census_treinamento,X_census_teste,y_census_teste])
+    pickle.dump([X_census_treinamento,y_census_treinamento,X_census_teste,y_census_teste],f)
 
 
 
