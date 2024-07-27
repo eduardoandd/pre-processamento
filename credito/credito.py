@@ -4,6 +4,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.express as px
 from sklearn.preprocessing import StandardScaler # calculo de padronização
+from sklearn.model_selection import train_test_split
+import pickle
 
 #========= Exploração dos dados =========
 df=pd.read_csv('credit_data.csv')
@@ -45,3 +47,9 @@ y= df.iloc[:,-1].values
 scaler = StandardScaler()
 X=scaler.fit_transform(X)
 
+# ============= Divisão entre base de treinamento e teste =============
+X_treinamento,X_teste,y_treinamento,y_teste=train_test_split(X,y,test_size=0.3, random_state=0)
+
+# ============= Salvando variáveis em disco =============
+with open('credit_data.pkl', mode='wb') as f:
+    pickle.dump([X_treinamento,y_treinamento,X_teste,y_teste],f)
