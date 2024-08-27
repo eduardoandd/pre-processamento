@@ -42,11 +42,11 @@ for i in range(X.shape[1]):
         indices.append(i)
 
 #OneHotEncoder
-# carros = ['Uno','Palio','Celta','Celta','Palio','Ford Ka','A20']
-# # precos=[15000,2000,5000,4000,3000]
+# carros = ['Uno','Palio','Celta','Celta','Palio','Ford Ka','A20','Ford Ka']
+# # # precos=[15000,2000,5000,4000,3000]
 # df_carros = pd.DataFrame({"carro": carros})
 # X_carro = df_carros.iloc[:,0:].values
-# # label_encoder_teste.fit_transform(X_carro[:])
+# label_encoder_teste.fit_transform(X_carro[:])
 
 # one_hot_encoder=ColumnTransformer(transformers=[('OneHot',OneHotEncoder(),[0])],remainder='passthrough')
 # one_hot_encoder.fit_transform(X_carro).toarray()
@@ -55,6 +55,7 @@ one_hot_encoder=ColumnTransformer(transformers=[('OneHot',OneHotEncoder(),indice
 X=one_hot_encoder.fit_transform(X).toarray()
 
 # ============= Escalonamento de valores =============
+
 scaler_census=StandardScaler()
 X=scaler_census.fit_transform(X)
 

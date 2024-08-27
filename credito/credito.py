@@ -34,10 +34,14 @@ df[df['age'] > 0]['age'].mean()
 df[df['age'] < 0]= df[df['age'] > 0]['age'].mean()
 df['age'].mean()
 
-#========= tratamento de valores incosistentes =========
+#========= tratamento de valores nulos =========
 df.isna().sum()
 df.loc[pd.isna(df['age'])]
 df['age'].fillna(df['age'].mean(),inplace=True)
+
+#========= Convertendo para inteiro =========
+df['default']=df['default'].astype(int)
+df['age']=df['age'].astype(int)
 
 #========= divisao entre previsores e classes =========
 X= df.iloc[:,1:4].values
@@ -51,5 +55,5 @@ X=scaler.fit_transform(X)
 X_treinamento,X_teste,y_treinamento,y_teste=train_test_split(X,y,test_size=0.3, random_state=0)
 
 # ============= Salvando variáveis em disco =============
-with open('credit_data.pkl', mode='wb') as f:
+with open('credit.pkl', mode='wb') as f:
     pickle.dump([X_treinamento,y_treinamento,X_teste,y_teste],f)
